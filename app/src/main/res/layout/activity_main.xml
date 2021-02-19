@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="adapter"
+            type="com.hyperliteapps.pricechecker.adapters.CartListAdapter" />
+
+        <variable
+            name="viewModel"
+            type="com.hyperliteapps.pricechecker.viewModels.ShoppingListViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ShoppingListActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            app:theme="@style/ToolBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/Theme.PriceChecker.PopupOverlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ProgressBar
+            app:setupVisibility="@{viewModel.loading}"
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <LinearLayout
+            android:id="@+id/ll_no_items"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:visibility="visible">
+
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:gravity="center"
+                android:background="@drawable/ic_baseline_no_food_24" />
+
+            <TextView
+                android:id="@+id/tv_no_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_items_found"
+                android:textSize="22sp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/shopping_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:setAdapter="@{adapter}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintBottom_toTopOf="@+id/total_view" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/total_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tv_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.total}"
+                tools:text="Total: $54.00"
+                android:textSize="22sp"
+                android:padding="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <com.nambimobile.widgets.efab.ExpandableFabLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- The next 3 Views will only display in portrait orientation -->
+            <com.nambimobile.widgets.efab.Overlay
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:overlay_orientation="portrait"/>
+
+            <com.nambimobile.widgets.efab.ExpandableFab
+                android:id="@+id/e_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="@dimen/fab_margin"
+                android:layout_marginEnd="@dimen/fab_margin"
+                app:efab_icon="@drawable/ic_add_shopping"
+                app:efab_iconAnimationRotationDeg="-360"
+                app:efab_closingAnticipateTension="0"
+                app:efab_orientation="portrait"/>
+
+            <com.nambimobile.widgets.efab.FabOption
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_orientation="portrait"
+                app:label_text="Scan QR code"
+                app:fab_icon="@drawable/ic_scan_qr"
+                android:onClick="onClickScanQr"/>
+
+            <com.nambimobile.widgets.efab.FabOption
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_orientation="portrait"
+                app:label_text="Enter item ID"
+                app:fab_icon="@drawable/ic_edit"
+                android:onClick="onClickEnterId"/>
+
+        </com.nambimobile.widgets.efab.ExpandableFabLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
